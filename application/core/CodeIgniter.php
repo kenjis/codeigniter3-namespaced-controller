@@ -395,45 +395,12 @@ if ( ! is_php('5.4'))
  *  controller methods that begin with an underscore.
  */
 
-/**
- * Get namespaced controller info
- * 
- * @param string $class controller classname in original CodeIgniter
- * @param string $dir   $RTR->directory
- * @return array        [fqcn, class path]
- */
-function getNamespacedController($class, $dir = null)
-{
-	$namespace = config_item('controller_namespace');
-	if ($namespace)
-	{
-		if ($dir)
-		{
-			$classname = $namespace.'\\'.str_replace('/', '\\', $dir).$class;
-		}
-		else
-		{
-			$classname = $namespace.'\\'.$class;
-		}
-	}
-	else
-	{
-		$classname = $class;
-	}
-
-	$path = APPPATH.'controllers/'.$dir.$class.'.php';
-
-	return [
-		'fqcn' => $classname,
-		'path' => $path,
-	];
-}
-
 	$e404 = FALSE;
 	$class = ucfirst($RTR->class);
 	$method = $RTR->method;
 
 	// Controller name with namespace
+	require APPPATH.'core/getNamespacedController.php';
 	$classname = getNamespacedController($class, $RTR->directory)['fqcn'];
 
 	if (empty($class) OR ! file_exists(APPPATH.'controllers/'.$RTR->directory.$class.'.php'))

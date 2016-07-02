@@ -358,6 +358,10 @@ MonkeyPatchManager::init([
  * -------------------------------------------------------------------
  */
 require __DIR__ . '/_ci_phpunit_test/CIPHPUnitTest.php';
+
+// for namespaced controller
+require APPPATH.'core/getNamespacedController.php';
+
 CIPHPUnitTest::init([
 	// Directories for autoloading
 	APPPATH.'models',

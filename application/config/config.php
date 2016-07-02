@@ -519,6 +519,6 @@ $config['proxy_ips'] = '';
 |
 | This item allows you to set namespace to controllers.
 |
-|	$config['controller_namespace'] = 'App\\Controllers';
+|	$config['controller_namespace'] = 'app\\controllers';
 */
-$config['controller_namespace'] = 'App\\Controllers';
+$config['controller_namespace'] = 'app\\controllers';

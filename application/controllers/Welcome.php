@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers;
+namespace app\controllers;
 
 class Welcome extends \CI_Controller {
 

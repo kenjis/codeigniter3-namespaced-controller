@@ -11,6 +11,15 @@ This repository provides namespaced controller to [CodeIgniter](https://github.c
 * CodeIgniter 3.0.6
 * ci-phpunit-test v0.12.2-dev
 
+## Usage
+
+You can configure namespace for controllers with `$config['controller_namespace']` in `application/config/config.php`. The default namespace is `app\controllers`.
+
+If you have `app\controllers\abc\def\Ghi` controller, the path of the file must be `application/controllers/abc/def/Ghi.php`.
+
+* All sub folder names must be lower case.
+* All sub namespace names must be the exact same case as folder names.
+
 ## Related Projects for CodeIgniter 3.0
 
 * [CodeIgniter Composer Installer](https://github.com/kenjis/codeigniter-composer-installer)

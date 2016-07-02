@@ -8,6 +8,9 @@
  * @link       https://github.com/kenjis/ci-phpunit-test
  */
 
+/**
+ * Namescpaced version
+ */
 class CIPHPUnitTestRouter
 {
 	/**
@@ -26,19 +29,22 @@ class CIPHPUnitTestRouter
 		$class = ucfirst($RTR->class);
 		$method = $RTR->method;
 
-		if (empty($class) OR ! file_exists(APPPATH.'controllers/'.$RTR->directory.$class.'.php'))
+		$classname = getNamespacedController($class, $RTR->directory)['fqcn'];
+		$classpath = getNamespacedController($class, $RTR->directory)['path'];
+
+		if (empty($class) OR ! file_exists($classpath))
 		{
 			$e404 = TRUE;
 		}
 		else
 		{
-			require_once(APPPATH.'controllers/'.$RTR->directory.$class.'.php');
+			require_once($classpath);
 
-			if ( ! class_exists($class, FALSE) OR $method[0] === '_' OR method_exists('CI_Controller', $method))
+			if ( ! class_exists($classname, FALSE) OR $method[0] === '_' OR method_exists('CI_Controller', $method))
 			{
 				$e404 = TRUE;
 			}
-			elseif (method_exists($class, '_remap'))
+			elseif (method_exists($classname, '_remap'))
 			{
 				$params = array($method, array_slice($URI->rsegments, 2));
 				$method = '_remap';
@@ -47,7 +53,7 @@ class CIPHPUnitTestRouter
 			// Furthermore, there are bug reports and feature/change requests related to it
 			// that make it unreliable to use in this context. Please, DO NOT change this
 			// work-around until a better alternative is available.
-			elseif ( ! in_array(strtolower($method), array_map('strtolower', get_class_methods($class)), TRUE))
+			elseif ( ! in_array(strtolower($method), array_map('strtolower', get_class_methods($classname)), TRUE))
 			{
 				$e404 = TRUE;
 			}
@@ -63,7 +69,7 @@ class CIPHPUnitTestRouter
 				CIPHPUnitTest::createCodeIgniterInstance();
 			}
 
-			show_404($RTR->directory.$class.'/'.$method.' is not found');
+			show_404($RTR->directory.$classname.'/'.$method.' is not found');
 		}
 
 		if ($method !== '_remap')
@@ -71,6 +77,6 @@ class CIPHPUnitTestRouter
 			$params = array_slice($URI->rsegments, 2);
 		}
 
-		return [$class, $method, $params];
+		return [$classname, $method, $params];
 	}
 }

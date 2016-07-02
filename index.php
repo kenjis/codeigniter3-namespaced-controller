@@ -312,4 +312,5 @@ switch (ENVIRONMENT)
  *
  * And away we go...
  */
-require_once BASEPATH.'core/CodeIgniter.php';
+// Changed from BASEPATH to APPPATH
+require_once APPPATH.'core/CodeIgniter.php';

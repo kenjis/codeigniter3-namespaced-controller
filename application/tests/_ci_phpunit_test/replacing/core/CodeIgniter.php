@@ -370,7 +370,7 @@ if ( ! is_php('5.4'))
 	 * Returns current CI instance object
 	 *
 	 * @return CI_Controller
-	 *
+	 * 
 	 * modified by ci-phpunit-test
 	 */
 	function &get_instance()
@@ -417,46 +417,9 @@ if ( ! is_php('5.4'))
  *  controller methods that begin with an underscore.
  */
 
-/**
- * Get namespaced controller info
- *
- * @param string $class controller classname in original CodeIgniter
- * @param string $dir   $RTR->directory
- * @return array        [fqcn, class path]
- */
-function getNamespacedController($class, $dir = null)
-{
-	$namespace = config_item('controller_namespace');
-	if ($namespace)
-	{
-		if ($dir)
-		{
-			$classname = $namespace.'\\'.str_replace('/', '\\', $dir).$class;
-		}
-		else
-		{
-			$classname = $namespace.'\\'.$class;
-		}
-	}
-	else
-	{
-		$classname = $class;
-	}
-
-	$path = APPPATH.'controllers/'.$dir.$class.'.php';
-
-	return [
-		'fqcn' => $classname,
-		'path' => $path,
-	];
-}
-
 	$e404 = FALSE;
 	$class = ucfirst($RTR->class);
 	$method = $RTR->method;
-
-	// Controller name with namespace
-	$classname = getNamespacedController($class, $RTR->directory)['fqcn'];
 
 	if (empty($class) OR ! file_exists(APPPATH.'controllers/'.$RTR->directory.$class.'.php'))
 	{
@@ -466,11 +429,11 @@ function getNamespacedController($class, $dir = null)
 	{
 		require_once(APPPATH.'controllers/'.$RTR->directory.$class.'.php');
 
-		if ( ! class_exists($classname, FALSE) OR $method[0] === '_' OR method_exists('CI_Controller', $method))
+		if ( ! class_exists($class, FALSE) OR $method[0] === '_' OR method_exists('CI_Controller', $method))
 		{
 			$e404 = TRUE;
 		}
-		elseif (method_exists($classname, '_remap'))
+		elseif (method_exists($class, '_remap'))
 		{
 			$params = array($method, array_slice($URI->rsegments, 2));
 			$method = '_remap';
@@ -479,7 +442,7 @@ function getNamespacedController($class, $dir = null)
 		// Furthermore, there are bug reports and feature/change requests related to it
 		// that make it unreliable to use in this context. Please, DO NOT change this
 		// work-around until a better alternative is available.
-		elseif ( ! in_array(strtolower($method), array_map('strtolower', get_class_methods($classname)), TRUE))
+		elseif ( ! in_array(strtolower($method), array_map('strtolower', get_class_methods($class)), TRUE))
 		{
 			$e404 = TRUE;
 		}
@@ -554,9 +517,9 @@ function getNamespacedController($class, $dir = null)
  * ------------------------------------------------------
  */
 	// Mark a start point so we can benchmark the controller
-	$BM->mark('controller_execution_time_( '.$classname.' / '.$method.' )_start');
+	$BM->mark('controller_execution_time_( '.$class.' / '.$method.' )_start');
 
-	$CI = new $classname();
+	$CI = new $class();
 
 /*
  * ------------------------------------------------------

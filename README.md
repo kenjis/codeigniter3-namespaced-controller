@@ -8,7 +8,7 @@ This repository provides namespaced controller to [CodeIgniter](https://github.c
 
 ## Including
 
-* CodeIgniter 3.0.6
+* CodeIgniter 3.1.10
 * ci-phpunit-test v0.12.2-dev
 
 ## Usage

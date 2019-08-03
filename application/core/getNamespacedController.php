@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Get namespaced controller info
  *
@@ -25,9 +24,7 @@ function getNamespacedController($class, $dir = null)
 	{
 		$classname = $class;
 	}
-
 	$path = APPPATH.'controllers/'.$dir.$class.'.php';
-
 	return [
 		'fqcn' => $classname,
 		'path' => $path,
